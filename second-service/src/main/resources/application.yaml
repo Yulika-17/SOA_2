@@ -1,0 +1,6 @@
+server:
+  port: 8081
+
+first-service:
+  url: ${FIRST_SERVICE_URL:http://localhost}
+  port: ${FIRST_SERVICE_PORT:8080}
