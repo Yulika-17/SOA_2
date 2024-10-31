@@ -8,10 +8,17 @@ import org.firstservice.model.House;
 import org.firstservice.repository.FlatRepository;
 import org.firstservice.util.enums.Transport;
 import org.firstservice.util.enums.Furnish;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service

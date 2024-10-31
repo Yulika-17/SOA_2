@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/flats", produces = MediaType.APPLICATION_XML_VALUE, consumes = MediaType.APPLICATION_XML_VALUE)
+@RequestMapping(value = "/flats", produces = MediaType.APPLICATION_XML_VALUE)
 public class AdditionalOperationsController {
 
     public final FlatService flatService;

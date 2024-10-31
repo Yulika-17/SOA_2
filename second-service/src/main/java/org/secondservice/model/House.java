@@ -1,5 +1,6 @@
 package org.secondservice.model;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JacksonXmlRootElement(localName = "house")
 public class House {
     private String name; //Поле может быть null
     private int year; //Максимальное значение поля: 210, Значение поля должно быть больше 0

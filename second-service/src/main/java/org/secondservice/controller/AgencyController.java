@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/agency", produces = MediaType.APPLICATION_XML_VALUE, consumes = MediaType.APPLICATION_XML_VALUE)
+@RequestMapping(value = "/api/v1/agency", produces = MediaType.APPLICATION_XML_VALUE)
 public class AgencyController {
 
     private final AgencyService agencyService;
