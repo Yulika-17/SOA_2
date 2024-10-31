@@ -4,11 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.secondservice.model.Flat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor

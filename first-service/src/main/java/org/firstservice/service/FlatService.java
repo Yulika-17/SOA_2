@@ -2,23 +2,19 @@ package org.firstservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.firstservice.dto.FlatDTO;
+import org.firstservice.dto.FlatsDTO;
 import org.firstservice.model.Coordinates;
 import org.firstservice.model.Flat;
 import org.firstservice.model.House;
 import org.firstservice.repository.FlatRepository;
 import org.firstservice.util.enums.Transport;
 import org.firstservice.util.enums.Furnish;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +22,40 @@ import java.util.stream.Collectors;
 public class FlatService {
     private final FlatRepository flatRepository;
 
+    private Pageable createPageable(Integer page, Integer size, Sort sort) {
+        int pageNumber = (page != null && page > 0) ? page - 1 : 0;
+        int pageSize = (size != null && size > 0) ? size : 5;
+        return PageRequest.of(pageNumber, pageSize, sort);
+    }
+
+    private Sort buildSort(List<String> sort) {
+        List<Sort.Order> orders = sort.stream()
+                .map(s -> s.startsWith("<") ? Sort.Order.desc(s.substring(1)) : Sort.Order.asc(s))
+                .collect(Collectors.toList());
+        return Sort.by(orders);
+    }
+
+    private Specification<Flat> createSpecification(List<String> filters) {
+        if (filters == null || filters.isEmpty()) {
+            return null;
+        }
+        return FlatSpecification.buildFilters(filters);
+    }
+
+    public Page<FlatsDTO> getFlats(Integer page, Integer size, List<String> sort, List<String> filters) {
+        Sort sortSpec = buildSort(sort != null ? sort : List.of());
+        Pageable pageable = createPageable(page, size, sortSpec);
+        Specification<Flat> specification = createSpecification(filters);
+
+        Page<Flat> flatsPage = flatRepository.findAll(specification, pageable);
+
+        return flatsPage.map(flat -> {
+            Coordinates coordinates = flat.getCoordinates();
+            House house = flat.getHouse();
+
+            return new FlatsDTO(flat, coordinates, house);
+        });
+    }
     public Flat add(FlatDTO flatDTO) {
         return flatRepository.save(createFromFlatDTO(flatDTO));
     }

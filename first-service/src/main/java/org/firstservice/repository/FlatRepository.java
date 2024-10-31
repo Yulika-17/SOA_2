@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface FlatRepository extends PagingAndSortingRepository<Flat, Integer>, JpaRepository<Flat, Integer>, JpaSpecificationExecutor<Flat> {
 

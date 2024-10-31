@@ -3,6 +3,7 @@ package org.firstservice.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.firstservice.dto.FlatDTO;
+import org.firstservice.dto.FlatsDTO;
 import org.firstservice.model.Flat;
 import org.firstservice.service.FlatService;
 import org.springframework.http.MediaType;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -20,6 +22,17 @@ import java.util.List;
 public class FlatController {
 
     public final FlatService flatService;
+
+    @GetMapping()
+    public ResponseEntity<Page<FlatsDTO>> getFlats(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "5") Integer size,
+            @RequestParam(required = false) List<String> sort,
+            @RequestParam(required = false) List<String> filter) {
+
+        Page<FlatsDTO> flats = flatService.getFlats(page, size, sort, filter);
+        return ResponseEntity.ok(flats);
+    }
 
     @PostMapping()
     public void createFLat(@Valid @RequestBody FlatDTO flatDTO) {
