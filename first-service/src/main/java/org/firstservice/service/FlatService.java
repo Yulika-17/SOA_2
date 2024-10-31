@@ -24,8 +24,16 @@ public class FlatService {
     private final FlatRepository flatRepository;
 
     private Pageable createPageable(Integer page, Integer size, Sort sort) {
+        if (page != null && page < 0) {
+            throw new IllegalArgumentException("Page number cannot be negative");
+        }
+        if (size != null && size <= 0) {
+            throw new IllegalArgumentException("Page size must be greater than zero");
+        }
+
         int pageNumber = (page != null && page > 0) ? page - 1 : 0;
         int pageSize = (size != null && size > 0) ? size : 5;
+
         return PageRequest.of(pageNumber, pageSize, sort);
     }
 
@@ -61,10 +69,6 @@ public class FlatService {
     public Flat add(FlatDTO flatDTO) {
         return flatRepository.save(createFromFlatDTO(flatDTO));
     }
-
-//    public Flat findById(Integer id) {
-//        return flatRepository.findById(id).get();
-//    }
 
     public Flat findById(Integer id) {
         return flatRepository.findById(id).orElse(null);
@@ -109,6 +113,11 @@ public class FlatService {
         if (flat.getPrice() != null)
             flatToUpdate.setPrice(flat.getPrice());
 
+//        if (flat.getTimeToMetroByFoot() != null)
+//            flatToUpdate.setTimeToMetroByFoot(flat.getTimeToMetroByFoot());
+//
+//        if (flat.getTimeToMetroByTransport() != null)
+//            flatToUpdate.setTimeToMetroByTransport(flat.getTimeToMetroByTransport());
         flatRepository.save(flatToUpdate);
     }
 
@@ -152,6 +161,8 @@ public class FlatService {
                 .house(flatDTO.getHouse())
                 .price(flatDTO.getPrice())
                 .creationDate(LocalDateTime.now())
+//                .timeToMetroByFoot(flatDTO.getTimeToMetroByFoot())
+//                .timeToMetroByTransport(flatDTO.getTimeToMetroByTransport())
                 .build();
     }
 }
