@@ -88,18 +88,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Безопасность
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        -->
-
         <!-- Jetty -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -118,7 +106,12 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
     </dependencies>
+
 
     <build>
         <plugins>
