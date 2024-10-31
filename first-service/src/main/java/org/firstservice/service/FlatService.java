@@ -1,5 +1,6 @@
 package org.firstservice.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.firstservice.dto.FlatDTO;
 import org.firstservice.dto.FlatsDTO;
@@ -56,13 +57,19 @@ public class FlatService {
             return new FlatsDTO(flat, coordinates, house);
         });
     }
+
     public Flat add(FlatDTO flatDTO) {
         return flatRepository.save(createFromFlatDTO(flatDTO));
     }
 
+//    public Flat findById(Integer id) {
+//        return flatRepository.findById(id).get();
+//    }
+
     public Flat findById(Integer id) {
-        return flatRepository.findById(id).get();
+        return flatRepository.findById(id).orElse(null);
     }
+
     public void update(Integer id, Flat flat) {
         Flat flatToUpdate = flatRepository.findById(id).get();
 
@@ -106,6 +113,10 @@ public class FlatService {
     }
 
     public void delete(Integer id) {
+        if (!flatRepository.existsById(id)) {
+            throw new EntityNotFoundException("Flat not found with ID: " + id);
+        }
+
         flatRepository.deleteById(id);
     }
 
