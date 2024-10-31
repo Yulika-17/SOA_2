@@ -13,7 +13,6 @@ import org.firstservice.util.enums.Transport;
 import org.firstservice.util.enums.View;
 
 @Data
-//@JacksonXmlRootElement(localName = "flat")
 public class FlatDTO {
     @NotBlank(message = "Name не может быть пустым!")
     @Size(max = 255, message = "Name не может превышать длину 255 символов!")

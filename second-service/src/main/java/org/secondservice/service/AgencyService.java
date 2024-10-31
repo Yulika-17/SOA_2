@@ -22,9 +22,9 @@ public class AgencyService {
     @Value("${first-service.port}")
     private Integer FIRST_SERVICE_PORT;
     public Long getMostExpensiveFlat(long id1, long id2, long id3) {
-        String url1 = String.format("%s:%d/flats/%d", FIRST_SERVICE_URL, FIRST_SERVICE_PORT, id1);
-        String url2 = String.format("%s:%d/flats/%d", FIRST_SERVICE_URL, FIRST_SERVICE_PORT, id2);
-        String url3 = String.format("%s:%d/flats/%d", FIRST_SERVICE_URL, FIRST_SERVICE_PORT, id3);
+        String url1 = String.format("%s:%d/api/v1/flats/%d", FIRST_SERVICE_URL, FIRST_SERVICE_PORT, id1);
+        String url2 = String.format("%s:%d/api/v1/flats/%d", FIRST_SERVICE_URL, FIRST_SERVICE_PORT, id2);
+        String url3 = String.format("%s:%d/api/v1/flats/%d", FIRST_SERVICE_URL, FIRST_SERVICE_PORT, id3);
 
         Flat flat1 = getFlatFromService(url1);
         Flat flat2 = getFlatFromService(url2);
