@@ -34,7 +34,7 @@ public class FlatController {
     public final FlatService flatService;
 
     @GetMapping()
-    public ResponseEntity<Page<FlatsDTO>> getFlats(
+    public ResponseEntity<?> getFlats(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "5") Integer size,
             @RequestParam(required = false) List<String> sort,
@@ -45,16 +45,16 @@ public class FlatController {
 
             if (flats.isEmpty()) {
                 ErrorDefault errorResponse = new ErrorDefault("No flats found for the specified filters.");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body((Page<FlatsDTO>) errorResponse);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
             }
 
             return ResponseEntity.ok(flats);
         } catch (IllegalArgumentException e) {
             ErrorIQP errorResponse = new ErrorIQP("Invalid query parameter: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body((Page<FlatsDTO>) errorResponse);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         } catch (Exception e) {
             ErrorISE errorResponse = new ErrorISE("Internal server error: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body((Page<FlatsDTO>) errorResponse);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
@@ -149,5 +149,21 @@ public class FlatController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
-
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllFlats() {
+        try {
+            List<Flat> flats = flatService.findAll();
+            if (flats.isEmpty()) {
+                ErrorDefault errorResponse = new ErrorDefault("No flats found for the specified filters.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            }
+            return ResponseEntity.ok(flats);
+        } catch (IllegalArgumentException e) {
+            ErrorIQP errorResponse = new ErrorIQP("Invalid query parameter: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        } catch (Exception e) {
+            ErrorISE errorResponse = new ErrorISE("Internal server error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
 }

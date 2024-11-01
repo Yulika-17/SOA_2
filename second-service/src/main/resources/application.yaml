@@ -3,4 +3,4 @@ server:
 
 first-service:
   url: ${FIRST_SERVICE_URL:http://localhost}
-  port: ${FIRST_SERVICE_PORT:8080}
+  port: ${FIRST_SERVICE_PORT:8443}

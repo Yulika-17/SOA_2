@@ -50,7 +50,9 @@ public class FlatService {
         }
         return FlatSpecification.buildFilters(filters);
     }
-
+    public List<Flat> findAll() {
+        return flatRepository.findAll();
+    }
     public Page<FlatsDTO> getFlats(Integer page, Integer size, List<String> sort, List<String> filters) {
         Sort sortSpec = buildSort(sort != null ? sort : List.of());
         Pageable pageable = createPageable(page, size, sortSpec);

@@ -18,4 +18,6 @@ public class Flat {
     private int numberOfRooms; //Значение поля должно быть больше 0
     private House house; //Поле не может быть null
     private Double price; //Значение поля должно быть больше 0
+    private Integer timeToMetroByFoot; //Значение поля должно быть больше 0
+    private Integer timeToMetroByTransport; //Значение поля должно быть больше 0
 }

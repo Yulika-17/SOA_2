@@ -7,6 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class AgencyService {
@@ -50,5 +55,28 @@ public class AgencyService {
         }
 
         return mostExpensive.getId();
+    }
+
+    public List<Flat> getFlatsOrderedByTimeToMetro(boolean byTransport, boolean desc) {
+        String url = String.format("%s:%d/api/v1/flats/all", FIRST_SERVICE_URL, FIRST_SERVICE_PORT);
+        ResponseEntity<Flat[]> response = restTemplate.getForEntity(url, Flat[].class);
+
+        if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
+            throw new RuntimeException("Failed to retrieve list of flats from first service");
+        }
+
+        List<Flat> flats = Arrays.asList(response.getBody());
+
+        Comparator<Flat> comparator = byTransport
+                ? Comparator.comparing(Flat::getTimeToMetroByTransport)
+                : Comparator.comparing(Flat::getTimeToMetroByFoot);
+
+        if (desc) {
+            comparator = comparator.reversed();
+        }
+
+        return flats.stream()
+                .sorted(comparator)
+                .collect(Collectors.toList());
     }
 }
