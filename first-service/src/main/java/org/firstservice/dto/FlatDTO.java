@@ -40,9 +40,9 @@ public class FlatDTO {
     @Min(value = 1, message = "Price должен быть больше 0!")
     private Double price;
 
-//    @Min(value = 1, message = "Time to metro by foot должен быть больше 0!")
-//    private Integer timeToMetroByFoot;
-//
-//    @Min(value = 1, message = "Time to metro by transport должен быть больше 0!")
-//    private Integer timeToMetroByTransport;
+    @Min(value = 1, message = "Time to metro by foot должен быть больше 0!")
+    private Integer timeToMetroByFoot;
+
+    @Min(value = 1, message = "Time to metro by transport должен быть больше 0!")
+    private Integer timeToMetroByTransport;
 }

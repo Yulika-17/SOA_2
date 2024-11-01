@@ -41,11 +41,11 @@ public class FlatsDTO {
     @Min(value = 1, message = "Price должен быть больше 0!")
     private Double price;
 
-//    @Min(value = 1, message = "Time to metro by foot должен быть больше 0!")
-//    private Integer timeToMetroByFoot;
-//
-//    @Min(value = 1, message = "Time to metro by transport должен быть больше 0!")
-//    private Integer timeToMetroByTransport;
+    @Min(value = 1, message = "Time to metro by foot должен быть больше 0!")
+    private Integer timeToMetroByFoot;
+
+    @Min(value = 1, message = "Time to metro by transport должен быть больше 0!")
+    private Integer timeToMetroByTransport;
 
     public FlatsDTO(Flat flat, Coordinates coordinates, House house) {
         this.name = flat.getName();
@@ -57,7 +57,7 @@ public class FlatsDTO {
         this.transport = flat.getTransport();
         this.house = house;
         this.price = flat.getPrice();
-//        this.timeToMetroByFoot = flat.getTimeToMetroByFoot();
-//        this.timeToMetroByTransport = flat.getTimeToMetroByTransport();
+        this.timeToMetroByFoot = flat.getTimeToMetroByFoot();
+        this.timeToMetroByTransport = flat.getTimeToMetroByTransport();
     }
 }

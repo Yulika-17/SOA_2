@@ -59,9 +59,9 @@ public class Flat {
     @Column(name = "price")
     private Double price;
 
-//    @Column(name = "time_to_metro_by_foot")
-//    private Integer timeToMetroByFoot;
-//
-//    @Column(name = "time_to_metro_by_transport")
-//    private Integer timeToMetroByTransport;
+    @Column(name = "time_to_metro_by_foot")
+    private Integer timeToMetroByFoot;
+
+    @Column(name = "time_to_metro_by_transport")
+    private Integer timeToMetroByTransport;
 }

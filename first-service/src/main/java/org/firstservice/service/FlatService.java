@@ -113,11 +113,11 @@ public class FlatService {
         if (flat.getPrice() != null)
             flatToUpdate.setPrice(flat.getPrice());
 
-//        if (flat.getTimeToMetroByFoot() != null)
-//            flatToUpdate.setTimeToMetroByFoot(flat.getTimeToMetroByFoot());
-//
-//        if (flat.getTimeToMetroByTransport() != null)
-//            flatToUpdate.setTimeToMetroByTransport(flat.getTimeToMetroByTransport());
+        if (flat.getTimeToMetroByFoot() != null)
+            flatToUpdate.setTimeToMetroByFoot(flat.getTimeToMetroByFoot());
+
+        if (flat.getTimeToMetroByTransport() != null)
+            flatToUpdate.setTimeToMetroByTransport(flat.getTimeToMetroByTransport());
         flatRepository.save(flatToUpdate);
     }
 
@@ -161,8 +161,8 @@ public class FlatService {
                 .house(flatDTO.getHouse())
                 .price(flatDTO.getPrice())
                 .creationDate(LocalDateTime.now())
-//                .timeToMetroByFoot(flatDTO.getTimeToMetroByFoot())
-//                .timeToMetroByTransport(flatDTO.getTimeToMetroByTransport())
+                .timeToMetroByFoot(flatDTO.getTimeToMetroByFoot())
+                .timeToMetroByTransport(flatDTO.getTimeToMetroByTransport())
                 .build();
     }
 }

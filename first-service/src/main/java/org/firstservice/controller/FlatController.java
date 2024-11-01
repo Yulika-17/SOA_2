@@ -102,28 +102,22 @@ public class FlatController {
             @Valid @RequestBody FlatDTO flatDTO
     ) {
         try {
-            // Проверка на существование квартиры по ID
             Optional<Flat> existingFlat = Optional.ofNullable(flatService.findById(id));
             if (existingFlat.isEmpty()) {
-                // Ответ с кодом 404, если квартира не найдена
                 ErrorDefault errorResponse = new ErrorDefault("Flat not found with ID: " + id);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
             }
 
-            // Создаем обновленную квартиру и выполняем обновление
             Flat updatedFlat = flatService.createFromFlatDTO(flatDTO);
             flatService.update(id, updatedFlat);
 
-            // Возвращаем обновленную квартиру с кодом 200
             return ResponseEntity.ok(updatedFlat);
 
         } catch (IllegalArgumentException e) {
-            // Обработка ошибки некорректного параметра запроса, возвращает код 400
             ErrorIQP errorResponse = new ErrorIQP("Invalid query parameter: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 
         } catch (Exception e) {
-            // Общая обработка для внутренних ошибок сервера, возвращает код 500
             ErrorISE errorResponse = new ErrorISE("Internal server error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
