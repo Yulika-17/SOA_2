@@ -1,5 +1,6 @@
 package org.firstservice.config;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,14 +17,16 @@ public class WebSecurityConfig {
 //                .requiresChannel(channel -> channel
 //                        .anyRequest().requiresSecure() // Все запросы должны быть через HTTPS
 //                )
-                .csrf().disable()
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/index.html", "/static/**", "/css/**", "/js/**", "/img/**").permitAll()
                         .requestMatchers("/api/v1/flats", "/api/v1/flats/*").permitAll()
+                        .requestMatchers("/api/v1/agency/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling()
-                .accessDeniedPage("/403");
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/403")
+                );
 
         return http.build();
     }
