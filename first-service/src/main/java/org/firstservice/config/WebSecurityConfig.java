@@ -14,9 +14,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-//                .requiresChannel(channel -> channel
-//                        .anyRequest().requiresSecure() // Все запросы должны быть через HTTPS
-//                )
+                .requiresChannel(channel -> channel
+                        .anyRequest().requiresSecure() // Все запросы должны быть через HTTPS
+                )
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/index.html", "/static/**", "/css/**", "/js/**", "/img/**").permitAll()

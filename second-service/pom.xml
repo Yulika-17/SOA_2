@@ -131,6 +131,22 @@
             <version>4.5.13</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.3.1</version> <!-- Проверьте на наличие последней версии -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5</artifactId>
+            <version>5.2.5</version> <!-- Проверьте на наличие последней версии -->
+        </dependency>
+
 
 
     </dependencies>
@@ -157,6 +173,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>22</source>
+                    <target>22</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -78,9 +78,12 @@ public class AgencyService {
 
         List<Flat> flats = Arrays.asList(response.getBody());
 
-        Comparator<Flat> comparator = byTransport
-                ? Comparator.comparing(Flat::getTimeToMetroByTransport)
-                : Comparator.comparing(Flat::getTimeToMetroByFoot);
+        Comparator<Flat> comparator;
+        if (byTransport) {
+            comparator = Comparator.comparing(Flat::getTimeToMetroByTransport, Comparator.nullsLast(Comparator.naturalOrder()));
+        } else {
+            comparator = Comparator.comparing(Flat::getTimeToMetroByFoot, Comparator.nullsLast(Comparator.naturalOrder()));
+        }
 
         if (desc) {
             comparator = comparator.reversed();

@@ -9,6 +9,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeExceptions(RuntimeException ex) {
+        ex.printStackTrace();
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("{\"code\": \"500\", \"message\": \"Runtime error occurred\"}");
+    }
+
     @ExceptionHandler(InvalidQueryParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleInvalidQueryParameter(InvalidQueryParameterException ex) {
