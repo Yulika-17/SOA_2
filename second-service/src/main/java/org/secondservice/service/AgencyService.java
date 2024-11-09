@@ -55,7 +55,7 @@ public class AgencyService {
 
     private Integer findMostExpensive(Flat flat1, Flat flat2, Flat flat3) {
         List<Flat> flats = Arrays.asList(flat1, flat2, flat3).stream()
-                .filter(flat -> flat != null)  // Remove nulls
+                .filter(flat -> flat != null)
                 .collect(Collectors.toList());
 
         if (flats.isEmpty()) {

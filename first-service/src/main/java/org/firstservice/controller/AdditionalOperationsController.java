@@ -6,7 +6,7 @@ import org.firstservice.exception.ErrorDefault;
 import org.firstservice.exception.ErrorIQP;
 import org.firstservice.exception.ErrorISE;
 import org.firstservice.model.Flat;
-import org.firstservice.service.FlatService;
+import org.firstservice.service.AdditionalOperationsService;
 import org.firstservice.util.enums.Furnish;
 import org.firstservice.util.enums.Transport;
 import org.springframework.http.HttpStatus;
@@ -23,12 +23,12 @@ import java.util.List;
 @RequestMapping(value = "/api/v1/flats", produces = MediaType.APPLICATION_XML_VALUE)
 public class AdditionalOperationsController {
 
-    public final FlatService flatService;
+    public final AdditionalOperationsService additionalOperationsService;
 
     @GetMapping("/average-number-of-rooms")
     public ResponseEntity<?> getAverageNumberOfRooms() {
         try {
-            Double averageRooms = flatService.getAverageNumberOfRooms();
+            Double averageRooms = additionalOperationsService.getAverageNumberOfRooms();
 
             if (averageRooms == null) {
                 ErrorDefault errorResponse = new ErrorDefault("No flats available for calculation");
@@ -47,7 +47,7 @@ public class AdditionalOperationsController {
     @GetMapping("/count-by-transport")
     public ResponseEntity<?> countFlatsWithTransportGreaterThan(@RequestParam Transport transport) {
         try {
-            long count = flatService.countFlatsWithTransportGreaterThan(transport);
+            long count = additionalOperationsService.countFlatsWithTransportGreaterThan(transport);
 
             return ResponseEntity.ok(count);
         } catch (IllegalArgumentException e) {
@@ -65,7 +65,7 @@ public class AdditionalOperationsController {
     @GetMapping("/filter-by-furnish")
     public ResponseEntity<?> getFlatsWithFurnishGreaterThan(@RequestParam Furnish furnish) {
         try {
-            List<Flat> flats = flatService.getFlatsWithFurnishGreaterThan(furnish);
+            List<Flat> flats = additionalOperationsService.getFlatsWithFurnishGreaterThan(furnish);
 
             if (flats.isEmpty()) {
                 ErrorDefault errorResponse = new ErrorDefault("No flats found with furnish level greater than specified");

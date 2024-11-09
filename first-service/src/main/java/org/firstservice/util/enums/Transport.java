@@ -13,6 +13,6 @@ public enum Transport {
     }
 
     public boolean isGreaterThan(Transport other) {
-        return this.value > other.value;
+        return this.value >= other.value;
     }
 }

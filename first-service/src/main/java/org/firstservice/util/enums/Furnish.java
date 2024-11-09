@@ -3,8 +3,8 @@ package org.firstservice.util.enums;
 public enum Furnish {
     DESIGNER(4),
     FINE(3),
-    BAD(2),
-    LITTLE(1);
+    BAD(1),
+    LITTLE(2);
 
     private final int value;
 
@@ -13,6 +13,6 @@ public enum Furnish {
     }
 
     public boolean isGreaterThan(Furnish other) {
-        return this.value > other.value;
+        return this.value >= other.value;
     }
 }

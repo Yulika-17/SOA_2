@@ -1,22 +1,19 @@
 package org.firstservice.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.firstservice.dto.FlatDTO;
 import org.firstservice.dto.FlatsDTO;
+import org.firstservice.exception.ResourceNotFoundException;
 import org.firstservice.model.Coordinates;
 import org.firstservice.model.Flat;
 import org.firstservice.model.House;
 import org.firstservice.repository.FlatRepository;
-import org.firstservice.util.enums.Transport;
-import org.firstservice.util.enums.Furnish;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,31 +29,17 @@ public class FlatService {
         }
 
         int pageNumber = (page != null && page > 0) ? page - 1 : 0;
-        int pageSize = (size != null && size > 0) ? size : 5;
+        int pageSize = (size != null && size > 0) ? size : 1000;
 
         return PageRequest.of(pageNumber, pageSize, sort);
-    }
-
-    private Sort buildSort(List<String> sort) {
-        List<Sort.Order> orders = sort.stream()
-                .map(s -> s.startsWith("<") ? Sort.Order.desc(s.substring(1)) : Sort.Order.asc(s))
-                .collect(Collectors.toList());
-        return Sort.by(orders);
-    }
-
-    private Specification<Flat> createSpecification(List<String> filters) {
-        if (filters == null || filters.isEmpty()) {
-            return null;
-        }
-        return FlatSpecification.buildFilters(filters);
     }
     public List<Flat> findAll() {
         return flatRepository.findAll();
     }
     public Page<FlatsDTO> getFlats(Integer page, Integer size, List<String> sort, List<String> filters) {
-        Sort sortSpec = buildSort(sort != null ? sort : List.of());
+        Sort sortSpec = FlatSpecification.buildSort(sort != null ? sort : List.of());
         Pageable pageable = createPageable(page, size, sortSpec);
-        Specification<Flat> specification = createSpecification(filters);
+        Specification<Flat> specification = FlatSpecification.createSpecification(filters);
 
         Page<Flat> flatsPage = flatRepository.findAll(specification, pageable);
 
@@ -73,81 +56,39 @@ public class FlatService {
     }
 
     public Flat findById(Integer id) {
-        return flatRepository.findById(id).orElse(null);
+        return flatRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Flat with id " + id + " not found"));
     }
 
     public void update(Integer id, Flat flat) {
-        Flat flatToUpdate = flatRepository.findById(id).get();
+        Flat flatToUpdate = flatRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Flat with id " + id + " not found"));
 
-        if (flat.getName() != null)
-            flatToUpdate.setName(flat.getName());
-
-        if (flat.getCoordinates() != null) {
-            Coordinates coordinates = flatToUpdate.getCoordinates();
-
-            coordinates.setX(flat.getCoordinates().getX());
-            coordinates.setY(flat.getCoordinates().getY());
-        }
-
-        if (flat.getArea() != null)
-            flatToUpdate.setArea(flat.getArea());
-
-        if (flat.getNumberOfRooms() != null)
-            flatToUpdate.setNumberOfRooms(flat.getNumberOfRooms());
-
-        if (flat.getFurnish() != null)
-            flatToUpdate.setFurnish(flat.getFurnish());
-
-        if (flat.getView() != null)
-            flatToUpdate.setView(flat.getView());
-
-        if (flat.getTransport() != null)
-            flatToUpdate.setTransport(flat.getTransport());
-
-        if (flat.getHouse() != null) {
-            House house = flatToUpdate.getHouse();
-
-            house.setName(flat.getHouse().getName());
-            house.setYear(flat.getHouse().getYear());
-            house.setNumberOfFlatsOnFloor(flat.getHouse().getNumberOfFlatsOnFloor());
-            house.setNumberOfLifts(flat.getHouse().getNumberOfLifts());
-        }
-        if (flat.getPrice() != null)
-            flatToUpdate.setPrice(flat.getPrice());
-
-        if (flat.getTimeToMetroByFoot() != null)
-            flatToUpdate.setTimeToMetroByFoot(flat.getTimeToMetroByFoot());
-
-        if (flat.getTimeToMetroByTransport() != null)
-            flatToUpdate.setTimeToMetroByTransport(flat.getTimeToMetroByTransport());
+        flatToUpdate.setName(flat.getName());
+        Coordinates coordinates = flatToUpdate.getCoordinates();
+        coordinates.setX(flat.getCoordinates().getX());
+        coordinates.setY(flat.getCoordinates().getY());
+        flatToUpdate.setArea(flat.getArea());
+        flatToUpdate.setNumberOfRooms(flat.getNumberOfRooms());
+        flatToUpdate.setFurnish(flat.getFurnish());
+        flatToUpdate.setView(flat.getView());
+        flatToUpdate.setTransport(flat.getTransport());
+        House house = flatToUpdate.getHouse();
+        house.setName(flat.getHouse().getName());
+        house.setYear(flat.getHouse().getYear());
+        house.setNumberOfFlatsOnFloor(flat.getHouse().getNumberOfFlatsOnFloor());
+        house.setNumberOfLifts(flat.getHouse().getNumberOfLifts());
+        flatToUpdate.setPrice(flat.getPrice());
+        flatToUpdate.setTimeToMetroByFoot(flat.getTimeToMetroByFoot());
+        flatToUpdate.setTimeToMetroByTransport(flat.getTimeToMetroByTransport());
         flatRepository.save(flatToUpdate);
     }
 
     public void delete(Integer id) {
-        if (!flatRepository.existsById(id)) {
-            throw new EntityNotFoundException("Flat not found with ID: " + id);
-        }
+        flatRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Flat not found with id: " + id));
 
         flatRepository.deleteById(id);
-    }
-
-    public Double getAverageNumberOfRooms() {
-        return flatRepository.findAverageNumberOfRooms();
-    }
-
-    public long countFlatsWithTransportGreaterThan(Transport transport) {
-        List<Flat> flats = flatRepository.findAll();
-        return flats.stream()
-                .filter(flat -> flat.getTransport().isGreaterThan(transport))
-                .count();
-    }
-
-    public List<Flat> getFlatsWithFurnishGreaterThan(Furnish furnish) {
-        List<Flat> flats = flatRepository.findAll();
-
-        return flats.stream()
-                .filter(flat -> flat.getFurnish().isGreaterThan(furnish))
-                .collect(Collectors.toList());
     }
 
     public Flat createFromFlatDTO(FlatDTO flatDTO) {
@@ -168,3 +109,4 @@ public class FlatService {
                 .build();
     }
 }
+
