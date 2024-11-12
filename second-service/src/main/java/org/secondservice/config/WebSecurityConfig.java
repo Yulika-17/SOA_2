@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -16,7 +17,7 @@ public class WebSecurityConfig {
                 .requiresChannel(channel -> channel
                         .anyRequest().requiresSecure() // Все запросы должны быть через HTTPS
                 )
-                .csrf(csrf -> csrf.disable())
+                .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/index.html", "/static/**", "/css/**", "/js/**", "/img/**").permitAll()
                         .requestMatchers("/api/v1/flats", "/api/v1/flats/*").permitAll()

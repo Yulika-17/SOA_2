@@ -1,0 +1,8 @@
+<payara-micro>
+    <network-listeners>
+        <network-listener protocol="http-listener" port="8083" />
+        <network-listener protocol="https-listener" port="8181" >
+            <ssl certificate-nickname="mycert"/>
+        </network-listener>
+    </network-listeners>
+</payara-micro>

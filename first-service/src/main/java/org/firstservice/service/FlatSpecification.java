@@ -64,4 +64,3 @@ public class FlatSpecification {
         return FlatSpecification.buildFilters(filters);
     }
 }
-
