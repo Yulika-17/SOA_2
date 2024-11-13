@@ -36,7 +36,7 @@ public class FlatController {
     @GetMapping()
     public ResponseEntity<?> getFlats(
             @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "5") Integer size,
+            @RequestParam(defaultValue = "1000") Integer size,
             @RequestParam(required = false) List<String> sort,
             @RequestParam(required = false) List<String> filter) {
 
