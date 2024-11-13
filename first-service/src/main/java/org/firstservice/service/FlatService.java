@@ -85,12 +85,12 @@ public class FlatService {
         return flatToUpdate;
     }
 
-    public void delete(Integer id) {
-        flatRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Flat not found with id: " + id));
-
-        flatRepository.deleteById(id);
+    public void delete(int id) {
+        Flat flat = flatRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Flat not found with id: " + id));  // Выбрасываем исключение, если квартира не найдена
+        flatRepository.delete(flat);  // Если квартира найдена, удаляем ее
     }
+
 
     public Flat createFromFlatDTO(FlatDTO flatDTO) {
 

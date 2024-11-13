@@ -8,6 +8,7 @@ import org.firstservice.dto.FlatsDTO;
 import org.firstservice.exception.ErrorDefault;
 import org.firstservice.exception.ErrorIQP;
 import org.firstservice.exception.ErrorISE;
+import org.firstservice.exception.ResourceNotFoundException;
 import org.firstservice.model.Flat;
 import org.firstservice.service.FlatService;
 import org.springframework.http.HttpStatus;
@@ -65,12 +66,18 @@ public class FlatController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteFlat(@PathVariable int id) {
-        flatService.delete(id);
-        Map<String, Object> response = new HashMap<>();
-        response.put("code", 204);
-        response.put("message", "The flat was successfully deleted");
-        response.put("time", ZonedDateTime.now(ZoneOffset.UTC).toString());
+        try {
+            flatService.delete(id);
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", 204);
+            response.put("message", "The flat was successfully deleted");
+            response.put("time", ZonedDateTime.now(ZoneOffset.UTC).toString());
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+            return ResponseEntity.ok(response);
+
+        } catch (ResourceNotFoundException ex) {
+            ErrorDefault errorResponse = new ErrorDefault("Flat not found with id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
     }
 }

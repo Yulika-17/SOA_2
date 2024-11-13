@@ -34,6 +34,10 @@ public class AdditionalOperationsController {
     @GetMapping("/count-by-transport")
     public ResponseEntity<?> countFlatsWithTransportGreaterThan(@RequestParam Transport transport) {
         long count = additionalOperationsService.countFlatsWithTransportGreaterThan(transport);
+        if (count == 0) {
+            ErrorDefault errorResponse = new ErrorDefault("No flats found with transport level greater than specified");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
         return ResponseEntity.ok(count);
     }
 

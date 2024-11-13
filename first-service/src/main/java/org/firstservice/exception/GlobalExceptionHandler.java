@@ -28,11 +28,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDefault> handleResourceNotFoundException(ResourceNotFoundException ex) {
-        ErrorDefault errorResponse = new ErrorDefault(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        ErrorDefault errorResponse = new ErrorDefault(ex.getMessage());  // Создаем объект ошибки с сообщением из исключения
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);  // Возвращаем ответ с кодом 404 и сообщением
     }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorISE> handleException(Exception ex) {
