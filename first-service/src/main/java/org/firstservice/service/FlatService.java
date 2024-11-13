@@ -29,7 +29,7 @@ public class FlatService {
         }
 
         int pageNumber = (page != null && page > 0) ? page - 1 : 0;
-        int pageSize = (size != null && size > 0) ? size : 1000;
+        int pageSize = (size != null && size > 0) ? size : Integer.MAX_VALUE;
 
         return PageRequest.of(pageNumber, pageSize, sort);
     }
