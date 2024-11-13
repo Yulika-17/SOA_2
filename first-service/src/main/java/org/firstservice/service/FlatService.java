@@ -60,7 +60,7 @@ public class FlatService {
                 .orElseThrow(() -> new ResourceNotFoundException("Flat with id " + id + " not found"));
     }
 
-    public void update(Integer id, Flat flat) {
+    public Flat update(Integer id, Flat flat) {
         Flat flatToUpdate = flatRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Flat with id " + id + " not found"));
 
@@ -82,6 +82,7 @@ public class FlatService {
         flatToUpdate.setTimeToMetroByFoot(flat.getTimeToMetroByFoot());
         flatToUpdate.setTimeToMetroByTransport(flat.getTimeToMetroByTransport());
         flatRepository.save(flatToUpdate);
+        return flatToUpdate;
     }
 
     public void delete(Integer id) {
