@@ -31,8 +31,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDefault> handleResourceNotFoundException(ResourceNotFoundException ex) {
-        ErrorDefault errorResponse = new ErrorDefault(ex.getMessage());  // Создаем объект ошибки с сообщением из исключения
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);  // Возвращаем ответ с кодом 404 и сообщением
+        ErrorDefault errorResponse = new ErrorDefault(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
@@ -75,7 +75,4 @@ public class GlobalExceptionHandler {
         ErrorIQP errorResponse = new ErrorIQP("Missing request parameter: " + ex.getParameterName());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
-
-
-
 }

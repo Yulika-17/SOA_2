@@ -70,27 +70,37 @@ public class AgencyService {
 
     public List<Flat> getFlatsOrderedByTimeToMetro(boolean byTransport, boolean desc) {
         String url = String.format("%s:%d/api/v1/flats/all", FIRST_SERVICE_URL, FIRST_SERVICE_PORT);
-        ResponseEntity<Flat[]> response = restTemplate.getForEntity(url, Flat[].class);
 
-        if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
-            throw new RuntimeException("Failed to retrieve list of flats from first service");
+        try {
+            ResponseEntity<Flat[]> response = restTemplate.getForEntity(url, Flat[].class);
+
+            if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
+                throw new NotFoundException("No flats found with the specified criteria");
+            }
+
+            List<Flat> flats = Arrays.asList(response.getBody());
+
+            if (flats.isEmpty()) {
+                throw new NotFoundException("No flats found with the specified criteria");
+            }
+
+            Comparator<Flat> comparator;
+            if (byTransport) {
+                comparator = Comparator.comparing(Flat::getTimeToMetroByTransport, Comparator.nullsLast(Comparator.naturalOrder()));
+            } else {
+                comparator = Comparator.comparing(Flat::getTimeToMetroByFoot, Comparator.nullsLast(Comparator.naturalOrder()));
+            }
+
+            if (desc) {
+                comparator = comparator.reversed();
+            }
+
+            return flats.stream()
+                    .sorted(comparator)
+                    .collect(Collectors.toList());
+        } catch (HttpClientErrorException.NotFound ex) {
+            throw new NotFoundException("No flats found with the specified criteria");
         }
-
-        List<Flat> flats = Arrays.asList(response.getBody());
-
-        Comparator<Flat> comparator;
-        if (byTransport) {
-            comparator = Comparator.comparing(Flat::getTimeToMetroByTransport, Comparator.nullsLast(Comparator.naturalOrder()));
-        } else {
-            comparator = Comparator.comparing(Flat::getTimeToMetroByFoot, Comparator.nullsLast(Comparator.naturalOrder()));
-        }
-
-        if (desc) {
-            comparator = comparator.reversed();
-        }
-
-        return flats.stream()
-                .sorted(comparator)
-                .collect(Collectors.toList());
     }
+
 }

@@ -60,8 +60,13 @@ public class FlatController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateFlat(@PathVariable Integer id, @Valid @RequestBody FlatDTO flatDTO) {
-        Flat updatedFlat = flatService.update(id, flatService.createFromFlatDTO(flatDTO));
-        return ResponseEntity.ok(updatedFlat);
+        try {
+            Flat updatedFlat = flatService.update(id, flatService.createFromFlatDTO(flatDTO));
+            return ResponseEntity.ok(updatedFlat);
+        } catch (ResourceNotFoundException ex) {
+            ErrorDefault errorResponse = new ErrorDefault("Flat not found with id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -79,5 +84,15 @@ public class FlatController {
             ErrorDefault errorResponse = new ErrorDefault("Flat not found with id: " + id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllFlats() {
+        List<Flat> flats = flatService.findAll();
+        if (flats.isEmpty()) {
+            ErrorDefault errorResponse = new ErrorDefault("No flats found for the specified filters.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+        return ResponseEntity.ok(flats);
     }
 }

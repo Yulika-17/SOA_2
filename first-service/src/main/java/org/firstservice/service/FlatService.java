@@ -87,8 +87,8 @@ public class FlatService {
 
     public void delete(int id) {
         Flat flat = flatRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Flat not found with id: " + id));  // Выбрасываем исключение, если квартира не найдена
-        flatRepository.delete(flat);  // Если квартира найдена, удаляем ее
+                .orElseThrow(() -> new ResourceNotFoundException("Flat not found with id: " + id));
+        flatRepository.delete(flat);
     }
 
 
