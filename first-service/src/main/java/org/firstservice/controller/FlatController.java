@@ -60,30 +60,20 @@ public class FlatController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateFlat(@PathVariable Integer id, @Valid @RequestBody FlatDTO flatDTO) {
-        try {
-            Flat updatedFlat = flatService.update(id, flatService.createFromFlatDTO(flatDTO));
-            return ResponseEntity.ok(updatedFlat);
-        } catch (ResourceNotFoundException ex) {
-            ErrorDefault errorResponse = new ErrorDefault("Flat not found with id: " + id);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-        }
+        Flat updatedFlat = flatService.update(id, flatService.createFromFlatDTO(flatDTO));
+        return ResponseEntity.ok(updatedFlat);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteFlat(@PathVariable int id) {
-        try {
-            flatService.delete(id);
-            Map<String, Object> response = new HashMap<>();
-            response.put("code", 204);
-            response.put("message", "The flat was successfully deleted");
-            response.put("time", ZonedDateTime.now(ZoneOffset.UTC).toString());
 
-            return ResponseEntity.ok(response);
+        flatService.delete(id);
+        Map<String, Object> response = new HashMap<>();
+        response.put("code", 204);
+        response.put("message", "The flat was successfully deleted");
+        response.put("time", ZonedDateTime.now(ZoneOffset.UTC).toString());
 
-        } catch (ResourceNotFoundException ex) {
-            ErrorDefault errorResponse = new ErrorDefault("Flat not found with id: " + id);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-        }
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/all")
