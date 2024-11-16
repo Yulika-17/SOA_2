@@ -9,7 +9,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>second-service</artifactId>
-    <packaging>war</packaging>
+<!--    <packaging>war</packaging>-->
 
     <name>second-service</name>
     <url>http://maven.apache.org</url>
@@ -191,6 +191,10 @@
                     <target>22</target>
                     <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
