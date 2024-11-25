@@ -73,7 +73,7 @@ public class FlatController {
         response.put("message", "The flat was successfully deleted");
         response.put("time", ZonedDateTime.now(ZoneOffset.UTC).toString());
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(204).body(response);
     }
 
     @GetMapping("/all")
