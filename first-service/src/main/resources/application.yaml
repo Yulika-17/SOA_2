@@ -1,9 +1,12 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/soa2
-    username: postgres
-    password: admin
+#    url: jdbc:postgresql://localhost:5432/soa2
+#    username: postgres
+#    password: admin
+    username: s311685
+    password:
+    url: jdbc:postgresql://localhost:5432/studs
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -14,7 +17,7 @@ spring:
         format_sql: true
 
 server:
-  port: 8443
+  port: 23580
   ssl:
     enabled: true
     key-store: classpath:static/certificates/keystore.p12
