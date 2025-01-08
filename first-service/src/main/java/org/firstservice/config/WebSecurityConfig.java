@@ -19,7 +19,7 @@ public class WebSecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/index.html", "/static/**", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/", "/index.html", "/static/**", "/css/**", "/js/**", "/img/**", "/actuator/health").permitAll()
                         .requestMatchers("/api/v1/flats", "/api/v1/flats/*").permitAll()
                         .requestMatchers("/api/v1/agency/**").permitAll()
                         .anyRequest().authenticated()

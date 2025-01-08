@@ -1,12 +1,16 @@
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://localhost:5432/soa2
-#    username: postgres
-#    password: admin
-    username: s311685
-    password:
-    url: jdbc:postgresql://localhost:5432/studs
+  application:
+    name: ${SERVICE_NAME}
+  cloud:
+    consul:
+      host: ${SPRING_CLOUD_CONSUL_HOST} # Здесь будет "consul", как указано в .env
+      port: ${SPRING_CLOUD_CONSUL_PORT} # Порт Consul по умолчанию 8500
+      discovery:
+        service-name: ${spring.application.name} # Название вашего сервиса, используется для регистрации
+        prefer-ip-address: true
+        health-check-url: /actuator/health # URL для проверки состояния здоровья
+        health-check-interval: 10s # Интервал для выполнения проверки здоровья
+
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -17,10 +21,16 @@ spring:
         format_sql: true
 
 server:
-  port: 23580
+  port: ${APPLICATION_PORT}
   ssl:
     enabled: true
     key-store: classpath:static/certificates/keystore.p12
     key-store-password: paspas
     key-store-type: PKCS12
     key-alias: mycert
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
